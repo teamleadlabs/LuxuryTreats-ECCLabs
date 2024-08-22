@@ -1,0 +1,197 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="onlinebookin.master.cs" Inherits="ECCVWebsite.OnlineBooking.onlinebookin" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <!-- Meta tags -->
+	<meta http-equiv="content-language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />	
+	<meta http-equiv="window-target" content="_top" /> <!-- skip frames -->
+	<meta name="robots" content="index,follow" />
+	<meta name="keywords" content="booking, hotel, hotels, reservations" />
+	<meta name="description" content="Online Booking" />
+	<link href="../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="../Content/Site.css" rel="stylesheet" />
+	<!-- Favicons --> 
+	<link href="img/favicon.png" rel="shortcut icon" type="image/png" />
+	<link href="img/favicon.png" rel="icon" type="image/png" />
+	
+	<!-- Main Stylesheets -->
+	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="css/extensions.css" media="screen" rel="stylesheet" type="text/css" /> <!-- browser specific extensions / remove it if you want to validate this document -->
+	<link href="css/print.css" media="print" rel="stylesheet" type="text/css" /> <!-- for printing -->
+	<!-- Alternate stylesheets/themes -->
+	<link href="css/orange.css" media="screen" rel="alternate stylesheet" type="text/css" title="orange" />
+	<link href="css/pink.css" media="screen" rel="alternate stylesheet" type="text/css" title="pink" />
+	<link href="css/red.css" media="screen" rel="alternate stylesheet" type="text/css" title="red" />
+	<link href="css/blue.css" media="screen" rel="alternate stylesheet" type="text/css" title="blue" />
+	<link href="css/brown.css" media="screen" rel="alternate stylesheet" type="text/css" title="brown" />
+	<link href="css/cyan.css" media="screen" rel="alternate stylesheet" type="text/css" title="cyan" />
+	<link href="css/purple.css" media="screen" rel="alternate stylesheet" type="text/css" title="purple" />
+	<!-- Your Custom Stylesheet --> 
+	<link href="css/custom.css" media="screen" rel="stylesheet" type="text/css" />
+	
+	<!-- RSS links (if needed) -->
+	<link href="top.rss" rel="alternate" type="application/rss+xml" title="Top Destinations" />
+	<link href="deals.rss" rel="alternate" type="application/rss+xml" title="Best Deals" />
+	<link href="blog.rss" rel="alternate" type="application/rss+xml" title="Latest News" />
+	
+	<!-- jQuery with plugins -->
+	<script src="js/jquery-1.4.2.min.js" type="text/javascript"></script> <!-- Could be loaded remotely from Google CDN : <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script> -->
+	<script src="js/jquery.ui.core.min.js" type="text/javascript"></script>
+	<script src="js/jquery.ui.widget.min.js" type="text/javascript"></script>
+	<script src="js/jquery.ui.tabs.min.js" type="text/javascript"></script>
+	<script src="js/jquery.datepick.pack.js" type="text/javascript"></script>
+	<script src="js/jquery.datepick-en-GB.js" type="text/javascript"></script> <!--  Datepick localisations: http://keith-wood.name/datepick.aspx -->
+	<script src="js/jquery.imgpreview.js" type="text/javascript"></script>
+	<script src="js/jquery.nyroModal.pack.js" type="text/javascript"></script>
+	<script src="js/jquery.notice.js" type="text/javascript"></script>
+	<script src="js/jquery.cycle.pack.js" type="text/javascript"></script>
+	<script src="js/jquery.notice.js" type="text/javascript"></script>
+	
+	<!-- Google maps and marker clustering -->
+	<script src="http://www.google.com/jsapi?autoload={'modules':[{name:'maps',version:3,other_params:'sensor=false'}]}" type="text/javascript"></script>
+	<script src="js/Fluster2.packed.js" type="text/javascript"></script>
+	
+	<!-- Custom template functions -->
+	<script src="js/custom.js" type="text/javascript"></script>
+	
+	<!-- Style switcher : only needed here for theme demonstration (does not work in IE7) -->
+	<script src="js/styleswitch.js" type="text/javascript"></script>
+	
+	<!-- Internet Explorer Fixes --> 
+	<!--[if IE]>
+	<link rel="stylesheet" type="text/css" media="all" href="css/ie.css"/>
+	<![endif]-->
+	<!--Upgrade MSIE5.5-7 to be compatible with MSIE8: http://ie7-js.googlecode.com/svn/version/2.1(beta3)/IE8.js -->
+	<!--[if lt IE 8]>
+	<script src="js/IE8.js"></script>
+	<![endif]-->
+	
+	<script type="text/javascript">
+	    //<![CDATA[
+
+	    // Sample hotel list -  LAT/LNG/Name
+	    hotels = new Array(
+            [36.12966, -115.21438, "Oakwood At Lakes Peccole Ranch"],
+            [36.09609, -115.20794, "Desert Paradise Resort"],
+            [36.10255, -115.2039, "Emerald Suites Cameron"],
+            [36.133637, -115.203266, "Emerald Suites - Cameron"],
+            [36.11542, -115.19906, "Palms Place Hotel at the Palms"],
+            [36.11543, -115.19813, "The Palms Casino Resort"],
+            [36.11565, -115.19319, "Gold Coast Hotel and Casino"],
+            [36.10101, -115.19159, "The Orleans Hotel & Casino"],
+            [36.11367, -115.19007, "Desert Tides"],
+            [36.11245, -115.19003, "Extended Stay America Las Vegas - Valley View"]
+        );
+
+	    // check-out date >= check-in date
+	    function customRange(dates) {
+	        if (this.id == 'startdate') {
+	            $('#enddate').datepick('option', 'minDate', dates[0] || null);
+	        }
+	        else {
+	            $('#startdate').datepick('option', 'maxDate', dates[0] || null);
+	        }
+	        var edt = $('#ed_timestamp').val();
+	        var sdt = $('#sd_timestamp').val();
+	        if ((edt > 0) && (sdt > 0)) {
+	            $('span.nights').text((edt - sdt) / (3600 * 24) + ' night(s)');
+	        } else {
+	            $('span.nights').text('');
+	        }
+	    }
+
+	    $(document).ready(function () {
+	        // Datepick input fields
+	        $('#startdate').datepick({
+	            onSelect: customRange,
+	            showTrigger: '#trigger',
+	            altField: '#sd_timestamp',
+	            altFormat: $.datepick.TIMESTAMP
+	        });
+	        $('#enddate').datepick({
+	            onSelect: customRange,
+	            showTrigger: '#trigger',
+	            altField: '#ed_timestamp',
+	            altFormat: $.datepick.TIMESTAMP
+	        });
+
+	        // Image preview on mouseover
+	        $('.infopanel a.previewimg').imgPreview({
+	            containerID: 'imgPreviewWithStyles',
+	            imgCSS: { height: 200 },
+	            // When container is shown:
+	            onShow: function (link) {
+	                $(link).stop().animate({ opacity: 0.8 });
+	                $('img', this).stop().css({ opacity: 0 });
+	            },
+	            onLoad: function () {
+	                $(this).animate({ opacity: 1 }, 300);
+	            },
+	            onHide: function (link) {
+	                $(link).stop().animate({ opacity: 1 });
+	            }
+	        });
+
+	        // Template setup
+	        Site.setup();
+
+	        // Init google map - center to first hotel in the list - do not use clustering
+	        Site.gmapInit(hotels[0][0], hotels[0][1], 12);
+
+	    });
+
+	    //]]>
+	</script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+
+    <form id="form1" runat="server">
+         <div class="FullWidth HeaderTop HeaderGrad clearfix">
+        <div class="container_24 clearfix Header">
+            <a id="A1" href="" class="branding grid_11 alpha" runat="server"></a>
+            <div class="grid_13 UtilityMenu omega">
+                <div class="info-area" style="margin-top: 50px;">
+                    <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                        <LoggedInTemplate>
+                            Welcome <span class="bold">
+                                <asp:LoginName ID="HeadLoginName" runat="server" />
+                            </span> | 
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                    
+                    <asp:LinkButton runat="server" Text="Register" ID="LinkRegister" OnClick="LinkRegister_Click" />
+                    |
+                    <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Logout"
+                        LogoutPageUrl="Index.aspx" />
+                </div>
+                <%-- <div class="search-box">
+                    <input type="text" id="search" class="text autoclear" accesskey="4" value="Search" />
+                </div>--%>
+                
+            </div>
+        </div>
+       
+    </div>
+         <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" href="Index.aspx">Home</a></li>
+                        <li><a runat="server" href="~/About">About</a></li>
+                        <li><a runat="server" href="Contactus.aspx">Contact</a></li>
+                    </ul>
+        </div>
+    <div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

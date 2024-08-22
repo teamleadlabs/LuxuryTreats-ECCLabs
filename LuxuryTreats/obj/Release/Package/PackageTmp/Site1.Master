@@ -1,0 +1,143 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="ECCVWebsite.Site1"  %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head id="Head1" runat="server">
+	<link type="text/css" href="~/Resources/jquery-ui/jquery-ui-1.8.16.custom.css" rel="stylesheet" runat="server" />
+	<link type="text/css" href="~/Resources/jquery-libs/autocomplete/styles.css" rel="stylesheet" runat="server" />
+    <title>ECCVApp</title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+   
+	
+	
+    <asp:ContentPlaceHolder ID="HeadContentPlaceHolder" runat="server">
+    </asp:ContentPlaceHolder>
+
+		<style type="text/css">
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+		</style>	
+
+
+</head>
+<body>
+    <form id="Form1" runat="server">
+    <script type='text/javascript' src='<%=Page.ResolveUrl("~/Resources/client-scripts/jquery-1.4.2.min.js")%>'></script>
+    <script type='text/javascript' src='<%=Page.ResolveUrl("~/Resources/client-scripts/menu.js")%>'></script>
+    <script type='text/javascript' src='<%=Page.ResolveUrl("~/Resources/client-scripts/jquery-ui-1.8.16.custom.min.js")%>'></script>
+    <script type='text/javascript' src='<%=Page.ResolveUrl("~/Resources/client-scripts/jquery-ui-1.8.16.custom.min.js")%>'></script>
+    <script type='text/javascript' src='<%=Page.ResolveUrl("~/Resources/client-scripts/jquery.autocomplete.js")%>'></script>
+
+    <script type="text/javascript">
+			$.fx.speeds._default = 500;
+			$(function() {
+				$( "#dialog" ).dialog({
+					autoOpen: false,
+					show: "blind",
+					hide: "explode"
+				});
+
+				$( "#dialog_link" ).click(function() {
+					$( "#dialog" ).dialog( "open" );
+						return false;
+				});
+				
+				
+			});
+		</script>
+    
+    
+    <div class="FullWidth HeaderTop HeaderGrad clearfix">
+        <div class="container_24 clearfix Header">
+            <a id="A1" href="" class="branding grid_11 alpha" runat="server"></a>
+            <div class="grid_13 UtilityMenu omega">
+                <div class="info-area" style="margin-top: 50px;">
+                    <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                        <LoggedInTemplate>
+                            Welcome <span class="bold">
+                                <asp:LoginName ID="HeadLoginName" runat="server" />
+                            </span> | 
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                    
+                    <asp:LinkButton runat="server" Text="Register" ID="LinkRegister" OnClick="LinkRegister_Click" />
+                    |
+                    <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Logout"
+                        LogoutPageUrl="./Index.aspx" />
+                </div>
+                <%-- <div class="search-box">
+                    <input type="text" id="search" class="text autoclear" accesskey="4" value="Search" />
+                </div>--%>
+                
+            </div>
+        </div>
+       
+    </div>
+         <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" href="Index.aspx">Home</a></li>
+                        <li><a runat="server" href="~/About">About</a></li>
+                        <li><a runat="server" href="Contactus.aspx">Contact</a></li>
+                    </ul>
+        </div>
+    <div class="FullWidth ContentMain">
+        <div class="container_24 clearfix ContentArea">
+            <div class="grid_5 alpha">
+                <div>
+                </div>
+                
+                
+                <ul class="menu" id="menu">
+                 
+                </ul>
+            </div>
+
+            
+                
+                
+    <!-- jquery help dialog -->  
+				
+				
+				<div class="">
+					<div id="dialog" title="Help For This Lesson">
+						<p>
+						<asp:ContentPlaceHolder ID="HelpContentPlaceholder" runat="server">
+                		</asp:ContentPlaceHolder>
+						</p>
+					</div>
+				</div>
+				
+	<!-- /jquery help dialog -->
+                <div class="Content">
+                <asp:ContentPlaceHolder ID="BodyContentPlaceholder" runat="server">
+                </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--
+    <div class="FullWidth FooterMain">
+        <div class="container_24 clearfix">
+            <div class="grid_14 clearfix eisk-info alpha suffix_1">
+                <p class="grid_14 branding-x2 alpha" title="" style="text-align:right">
+                </p>
+                <p style="text-align:right">
+                </p>
+            </div>
+        </div>
+    </div>
+    -->
+    </form>
+</body>
+</html>
+
